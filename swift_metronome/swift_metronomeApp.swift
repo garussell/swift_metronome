@@ -1,19 +1,15 @@
-//
-//  swift_metronomeApp.swift
-//  swift_metronome
-//
-//  Created by Allen Russell on 12/29/25.
-//
-
 import SwiftUI
 import SwiftData
 
 @main
 struct swift_metronomeApp: App {
     var sharedModelContainer: ModelContainer = {
+        // Include both Item and Tempo in the schema
         let schema = Schema([
             Item.self,
+            Tempo.self
         ])
+        
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
