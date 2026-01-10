@@ -1,25 +1,14 @@
 import SwiftUI
 import SwiftData
-import AVFoundation
 
-@Model
-final class Tempo {
-    @Attribute(.unique) var id: UUID
-    var name: String
-    var bpm: Int
 
-    init(name: String, bpm: Int) {
-        self.id = UUID()
-        self.name = name
-        self.bpm = bpm
-    }
-}
 
-var clickPlayer: AVAudioPlayer?
 
+
+// MARK: - ContentView
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var tempos: [Tempo] // Fetch all saved tempos
+    @Query(sort: \Tempo.name) private var tempos: [Tempo] // specify Tempo as root type
 
     @State private var bpm: Int = 120
     @State private var isPulsing: Bool = false
@@ -30,15 +19,23 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 30) {
-            Text(selectedTempoName == nil ? "Tempo" : "\(selectedTempoName!)")
-                .font(.title)
-                .padding(.top, 50)
 
-            // BPM adjuster
+            // Title
+            Text(selectedTempoName ?? "Tempo")
+                .font(.title)
+                .padding(.top, 40)
+
+            // Pulsing circle (now higher)
+            Circle()
+                .fill(Color.blue)
+                .frame(width: 100, height: 100)
+                .opacity(isPulsing ? 1.0 : 0.2)
+                .animation(.easeInOut(duration: 0.1), value: isPulsing)
+
+            // BPM wheel picker
             Picker("Tempo", selection: $bpm) {
                 ForEach(40...240, id: \.self) { value in
-                    Text("\(value) BPM")
-                        .tag(value)
+                    Text("\(value) BPM").tag(value)
                 }
             }
             .pickerStyle(.wheel)
@@ -48,20 +45,18 @@ struct ContentView: View {
                 restartPulse()
             }
 
-            // Mute button
-            
+            // Mute toggle
             Toggle(isOn: $isMuted) {
-                Label("Mute", systemImage: isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
+                Label(
+                    "Mute",
+                    systemImage: isMuted
+                        ? "speaker.slash.fill"
+                        : "speaker.wave.2.fill"
+                )
             }
             .padding(.horizontal)
-            
-            // Pulsing circle
-            Circle()
-                .fill(Color.blue)
-                .frame(width: 100, height: 100)
-                .opacity(isPulsing ? 1.0 : 0.2)
 
-            // Add tempo form
+            // Add tempo
             HStack {
                 TextField("Name", text: $newTempoName)
                     .textFieldStyle(.roundedBorder)
@@ -69,9 +64,9 @@ struct ContentView: View {
             }
             .padding(.horizontal)
 
-            // List of saved tempos
+            // Saved tempos
             List {
-                ForEach(tempos, id: \.id) { tempo in
+                ForEach(tempos) { tempo in
                     Button {
                         bpm = tempo.bpm
                         selectedTempoName = tempo.name
@@ -87,32 +82,30 @@ struct ContentView: View {
                 .onDelete(perform: deleteTempos)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.background)
-        .onAppear {
-            setupClick()
-            startPulse()
-        }
+        .onAppear { startPulse() }
         .onDisappear { timer?.invalidate() }
     }
 
+
     // MARK: - BPM Pulse
     func startPulse() {
-        if !isMuted {
-            clickPlayer?.play()
-        }
-        
         timer?.invalidate()
         let interval = 60.0 / Double(bpm)
+
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
             isPulsing = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + interval / 2) { isPulsing = false }
+
+            if !isMuted {
+                SynthMetronome.shared.playClick()
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + interval / 2) {
+                isPulsing = false
+            }
         }
     }
 
     func restartPulse() { startPulse() }
-    
-    func updateBPM(by delta: Int) { bpm = max(1, min(300, bpm + delta)); restartPulse() }
 
     // MARK: - CRUD
     func addTempo() {
@@ -125,22 +118,15 @@ struct ContentView: View {
     func deleteTempos(offsets: IndexSet) {
         for index in offsets {
             let tempo = tempos[index]
-            
             if tempo.name == selectedTempoName {
                 selectedTempoName = nil
             }
-            
             modelContext.delete(tempos[index])
         }
     }
-    
-    func setupClick() {
-        guard let url = Bundle.main.url(forResource: "click", withExtension: "wav") else { return }
-        clickPlayer = try? AVAudioPlayer(contentsOf: url)
-        clickPlayer?.prepareToPlay()
-    }
 }
 
+// MARK: - Preview
 #Preview {
     ContentView()
         .modelContainer(for: Tempo.self, inMemory: true)
