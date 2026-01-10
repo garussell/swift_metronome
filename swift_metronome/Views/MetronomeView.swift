@@ -1,12 +1,8 @@
 import SwiftUI
 import SwiftData
 
-
-
-
-
-// MARK: - ContentView
-struct ContentView: View {
+// MARK: - MetronomeView
+struct MetronomeView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Tempo.name) private var tempos: [Tempo] // specify Tempo as root type
 
@@ -128,6 +124,6 @@ struct ContentView: View {
 
 // MARK: - Preview
 #Preview {
-    ContentView()
+    MetronomeView()
         .modelContainer(for: Tempo.self, inMemory: true)
 }

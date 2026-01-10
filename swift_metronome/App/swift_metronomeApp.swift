@@ -3,11 +3,13 @@ import SwiftData
 
 @main
 struct swift_metronomeApp: App {
+    
     var sharedModelContainer: ModelContainer = {
         // Include both Item and Tempo in the schema
         let schema = Schema([
             Item.self,
-            Tempo.self
+            Tempo.self,
+            Setlist.self
         ])
         
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
@@ -21,7 +23,8 @@ struct swift_metronomeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environment(AppState())
         }
         .modelContainer(sharedModelContainer)
     }
