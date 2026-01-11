@@ -6,22 +6,23 @@ struct MetronomeView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppState.self) private var appState
 
-    @Query(sort: \Tempo.name) private var allTempos: [Tempo]
+    @Query private var allTempos: [Tempo]
 
     var tempos: [Tempo] {
         guard let setlist = appState.activeSetlist else {
             return allTempos.filter { $0.setlist == nil }
+                .sorted { $0.order < $1.order } // respects .order
         }
 
         return allTempos.filter { $0.setlist == setlist }
+            .sorted { $0.order < $1.order } // respects .order
     }
 
     @State private var bpm: Int = 120
     @State private var isPulsing: Bool = false
     @State private var timer: Timer?
-    @State private var newTempoName: String = ""
     @State private var selectedTempoName: String? = nil
-    @State private var isMuted: Bool = false
+    @State private var isMuted: Bool = true
 
     var body: some View {
         VStack(spacing: 30) {
@@ -62,14 +63,6 @@ struct MetronomeView: View {
             }
             .padding(.horizontal)
 
-            // Add tempo
-            HStack {
-                TextField("Name", text: $newTempoName)
-                    .textFieldStyle(.roundedBorder)
-                Button("Add") { addTempo() }
-            }
-            .padding(.horizontal)
-
             // Saved tempos
             List {
                 ForEach(tempos) { tempo in
@@ -88,8 +81,17 @@ struct MetronomeView: View {
                 .onDelete(perform: deleteTempos)
             }
         }
-        .onAppear { startPulse() }
-        .onDisappear { timer?.invalidate() }
+        
+        // iPhone does not fall asleep while app is in use
+        .onAppear {
+            UIApplication.shared.isIdleTimerDisabled = true
+            startPulse()
+        }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
+            timer?.invalidate()
+        }
+
     }
 
 
@@ -114,18 +116,6 @@ struct MetronomeView: View {
     func restartPulse() { startPulse() }
 
     // MARK: - CRUD
-    func addTempo() {
-        guard !newTempoName.isEmpty else { return }
-        let newTempo = Tempo(
-            name: newTempoName,
-            bpm: bpm,
-            setlist: appState.activeSetlist
-        )
-
-        modelContext.insert(newTempo)
-        newTempoName = ""
-    }
-
     func deleteTempos(offsets: IndexSet) {
         for index in offsets {
             let tempo = tempos[index]
