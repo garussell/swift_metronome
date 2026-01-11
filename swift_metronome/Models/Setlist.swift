@@ -5,5 +5,11 @@ import SwiftData
 @Model
 final class Setlist {
     var name: String
-    init(name: String) { self.name = name }
+    var tempos: [Tempo] = []   // <-- relationship
+
+    init(name: String) {
+        self.name = name
+    }
 }
+
+

@@ -4,7 +4,17 @@ import SwiftData
 // MARK: - MetronomeView
 struct MetronomeView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Tempo.name) private var tempos: [Tempo] // specify Tempo as root type
+    @Environment(AppState.self) private var appState
+
+    @Query(sort: \Tempo.name) private var allTempos: [Tempo]
+
+    var tempos: [Tempo] {
+        guard let setlist = appState.activeSetlist else {
+            return allTempos.filter { $0.setlist == nil }
+        }
+
+        return allTempos.filter { $0.setlist == setlist }
+    }
 
     @State private var bpm: Int = 120
     @State private var isPulsing: Bool = false
@@ -106,7 +116,12 @@ struct MetronomeView: View {
     // MARK: - CRUD
     func addTempo() {
         guard !newTempoName.isEmpty else { return }
-        let newTempo = Tempo(name: newTempoName, bpm: bpm)
+        let newTempo = Tempo(
+            name: newTempoName,
+            bpm: bpm,
+            setlist: appState.activeSetlist
+        )
+
         modelContext.insert(newTempo)
         newTempoName = ""
     }

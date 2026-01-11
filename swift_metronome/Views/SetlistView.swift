@@ -7,16 +7,14 @@ struct SetlistView: View {
     @Query(sort: \Setlist.name) private var setlists: [Setlist]
 
     @State private var newSetlistName: String = ""
-
-    // Push-navigation state
     @State private var selectedSetlistForEdit: Setlist?
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 24) {
+            VStack(spacing: 16) {
 
                 // Title
-                Text("Setlist")
+                Text("Setlists")
                     .font(.largeTitle)
                     .padding(.top, 40)
                     .foregroundStyle(.white)
@@ -33,15 +31,39 @@ struct SetlistView: View {
                 }
                 .padding(.horizontal)
 
-                // Setlist list
-                ScrollView {
-                    VStack(spacing: 16) {
-                        ForEach(setlists) { setlist in
-                            setlistRow(setlist)
+                // List of setlists
+                List {
+                    ForEach(setlists) { setlist in
+                        HStack {
+                            // Select active setlist
+                            Button {
+                                appState.activeSetlist = setlist
+                            } label: {
+                                Text(setlist.name)
+                                    .font(.headline)
+                                    .foregroundStyle(.black)
+                                    .padding(10)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .background(
+                                        appState.activeSetlist == setlist
+                                            ? Color.blue.opacity(0.25)
+                                            : Color.white
+                                    )
+                                    .clipShape(Capsule())
+                            }
+                            .buttonStyle(.plain)
+
+                            // Edit button
+                            Button("Edit") {
+                                selectedSetlistForEdit = setlist
+                            }
+                            .foregroundStyle(.blue)
                         }
+                        .padding(.vertical, 4)
                     }
-                    .padding(.horizontal)
+                    .onDelete(perform: deleteSetlists) // Swipe-to-delete
                 }
+                .listStyle(.plain)
 
                 Spacer()
             }
@@ -53,41 +75,21 @@ struct SetlistView: View {
         }
     }
 
-    // MARK: - Setlist Row
-    @ViewBuilder
-    private func setlistRow(_ setlist: Setlist) -> some View {
-        HStack {
-
-            // Select setlist (active for metronome)
-            Button {
-                appState.activeSetlist = setlist
-            } label: {
-                Text(setlist.name)
-                    .font(.headline)
-                    .foregroundStyle(.black)
-                    .padding(.vertical, 10)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        appState.activeSetlist == setlist
-                            ? Color.blue.opacity(0.25)
-                            : Color.white
-                    )
-                    .clipShape(Capsule())
-            }
-            .buttonStyle(.plain)
-
-            // Edit → push navigation
-            Button("Edit") {
-                selectedSetlistForEdit = setlist
-            }
-            .foregroundStyle(.blue)
-        }
-    }
-
-    // MARK: - Actions
+    // MARK: - CRUD
     private func addSetlist() {
         let setlist = Setlist(name: newSetlistName)
         modelContext.insert(setlist)
         newSetlistName = ""
+    }
+
+    private func deleteSetlists(offsets: IndexSet) {
+        for index in offsets {
+            let setlist = setlists[index]
+            // Clear active setlist if it's being deleted
+            if appState.activeSetlist == setlist {
+                appState.activeSetlist = nil
+            }
+            modelContext.delete(setlist)
+        }
     }
 }

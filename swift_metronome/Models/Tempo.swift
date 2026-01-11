@@ -3,12 +3,16 @@ import SwiftData
 
 @Model
 final class Tempo {
-    @Attribute(.unique) var id: UUID = UUID()
     var name: String
     var bpm: Int
+    var setlist: Setlist?      // <-- relationship
 
-    init(name: String, bpm: Int) {
+    init(name: String, bpm: Int, setlist: Setlist? = nil) {
         self.name = name
         self.bpm = bpm
+        self.setlist = setlist
     }
 }
+
+
+
