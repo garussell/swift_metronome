@@ -61,7 +61,6 @@ struct SetlistView: View {
                         }
                         .padding(.vertical, 4)
                     }
-                    .onDelete(perform: deleteSetlists) // Swipe-to-delete
                 }
                 .listStyle(.plain)
 
@@ -80,16 +79,5 @@ struct SetlistView: View {
         let setlist = Setlist(name: newSetlistName)
         modelContext.insert(setlist)
         newSetlistName = ""
-    }
-
-    private func deleteSetlists(offsets: IndexSet) {
-        for index in offsets {
-            let setlist = setlists[index]
-            // Clear active setlist if it's being deleted
-            if appState.activeSetlist == setlist {
-                appState.activeSetlist = nil
-            }
-            modelContext.delete(setlist)
-        }
     }
 }

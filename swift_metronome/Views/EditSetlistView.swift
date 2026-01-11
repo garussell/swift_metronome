@@ -11,80 +11,95 @@ struct EditSetlistView: View {
     @State private var newTempoName: String = ""
     @State private var bpm: Int = 120
 
-    @Query(sort: \Tempo.name) private var allTempos: [Tempo]
+    @Query(sort: \Tempo.order) private var allTempos: [Tempo]
 
     var temposInSetlist: [Tempo] {
         allTempos.filter { $0.setlist == setlist }
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
+        VStack(spacing: 16) {
 
-                // Title
-                Text("Edit Setlist")
-                    .font(.largeTitle)
-                    .padding(.top, 20)
+            // Title
+            Text("Edit Setlist")
+                .font(.largeTitle)
+                .padding(.top, 16)
 
-                // Rename setlist
-                TextField("Setlist name", text: $newName)
-                    .textFieldStyle(.roundedBorder)
-                    .padding(.horizontal)
-
-                Divider()
-
-                // Add Song
-                VStack(spacing: 16) {
-                    Text("Add Song")
-                        .font(.headline)
-
-                    TextField("Song name", text: $newTempoName)
-                        .textFieldStyle(.roundedBorder)
-
-                    Picker("BPM", selection: $bpm) {
-                        ForEach(40...240, id: \.self) { value in
-                            Text("\(value) BPM").tag(value)
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .frame(height: 120)
-
-                    Button("Add to Setlist") {
-                        addTempo()
-                    }
-                    .disabled(newTempoName.isEmpty)
-                    .buttonStyle(.borderedProminent)
-                }
+            // Rename setlist
+            TextField("Setlist name", text: $newName)
+                .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
 
-                Divider()
+            Divider()
 
-                // Songs in this setlist
-                VStack(alignment: .leading) {
-                    Text("Songs")
-                        .font(.headline)
-                        .padding(.horizontal)
+            // Add Song
+            VStack(spacing: 12) {
+                Text("Add Song")
+                    .font(.headline)
 
-                    ForEach(temposInSetlist) { tempo in
-                        HStack {
+                TextField("Song name", text: $newTempoName)
+                    .textFieldStyle(.roundedBorder)
+
+                Picker("BPM", selection: $bpm) {
+                    ForEach(40...240, id: \.self) { value in
+                        Text("\(value) BPM").tag(value)
+                    }
+                }
+                .pickerStyle(.wheel)
+                .frame(height: 100)
+
+                Button("Add to Setlist") {
+                    addTempo()
+                }
+                .disabled(newTempoName.isEmpty)
+                .buttonStyle(.borderedProminent)
+            }
+            .padding(.horizontal)
+
+            Divider()
+
+            // Songs list with drag reordering
+            List {
+                ForEach(temposInSetlist) { tempo in
+                    HStack {
+                        VStack(alignment: .leading) {
                             Text(tempo.name)
-                            Spacer()
                             Text("\(tempo.bpm) BPM")
+                                .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
-                        .padding(.horizontal)
-                        .padding(.vertical, 6)
+
+                        Spacer()
+
+                        Button {
+                            modelContext.delete(tempo)
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.red)
+                                .font(.title3)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .onDelete(perform: deleteTempos)
                 }
-
-                Button("Save Setlist") {
-                    saveChanges()
-                }
-                .buttonStyle(.borderedProminent)
-                .padding(.top)
-
+                .onMove(perform: moveTempos)
             }
+            .frame(maxHeight: 300)
+            .toolbar {
+                EditButton() // enables drag handles
+            }
+
+            Button("Save Setlist") {
+                saveChanges()
+            }
+            .buttonStyle(.borderedProminent)
+
+            Button(role: .destructive) {
+                deleteSetlist()
+            } label: {
+                Label("Delete Setlist", systemImage: "trash")
+            }
+            .padding(.bottom, 20)
+
         }
         .onAppear {
             newName = setlist.name
@@ -101,19 +116,34 @@ struct EditSetlistView: View {
     }
 
     private func addTempo() {
+        let nextOrder = temposInSetlist.count
+
         let tempo = Tempo(
             name: newTempoName,
             bpm: bpm,
-            setlist: setlist
+            setlist: setlist,
+            order: nextOrder
         )
+
         modelContext.insert(tempo)
         newTempoName = ""
     }
 
-    private func deleteTempos(offsets: IndexSet) {
-        for index in offsets {
-            let tempo = temposInSetlist[index]
+    private func moveTempos(from source: IndexSet, to destination: Int) {
+        var reordered = temposInSetlist
+        reordered.move(fromOffsets: source, toOffset: destination)
+
+        for (index, tempo) in reordered.enumerated() {
+            tempo.order = index
+        }
+    }
+
+    private func deleteSetlist() {
+        for tempo in temposInSetlist {
             modelContext.delete(tempo)
         }
+
+        modelContext.delete(setlist)
+        dismiss()
     }
 }
