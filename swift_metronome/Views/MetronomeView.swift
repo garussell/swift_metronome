@@ -23,6 +23,7 @@ struct MetronomeView: View {
     @State private var timer: Timer?
     @State private var selectedTempoName: String? = nil
     @State private var isMuted: Bool = true
+    @State private var beatIndex: Int = 0
 
     var body: some View {
         VStack(spacing: 30) {
@@ -104,8 +105,13 @@ struct MetronomeView: View {
             isPulsing = true
 
             if !isMuted {
-                SynthMetronome.shared.playClick()
+                let pattern = appState.activeAccentPattern
+                let isAccent = pattern[beatIndex]
+
+                SynthMetronome.shared.play(isAccent ? .accent : .tap)
             }
+
+            beatIndex = (beatIndex + 1) % appState.activeAccentPattern.count
 
             DispatchQueue.main.asyncAfter(deadline: .now() + interval / 2) {
                 isPulsing = false
@@ -113,7 +119,10 @@ struct MetronomeView: View {
         }
     }
 
-    func restartPulse() { startPulse() }
+    func restartPulse() {
+        beatIndex = 0
+        startPulse()
+    }
 
     // MARK: - CRUD
     func deleteTempos(offsets: IndexSet) {
