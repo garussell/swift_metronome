@@ -1,13 +1,45 @@
-//
-//  AppState.swift
-//  swift_metronome
-//
-//  Created by Allen Russell on 1/9/26.
-//
 import Foundation
 import SwiftData
 
 @Observable
 class AppState {
+
+    enum AccentPattern: Int, CaseIterable, Identifiable {
+        case four
+        case five
+        case six
+        case seven
+
+        var id: Int { rawValue }
+    }
+
     var activeSetlist: Setlist?
+
+    // Selection (THIS is what SettingsView modifies)
+    var selectedAccentPattern: AccentPattern = .four
+
+    // Pattern definitions
+    let fourAccentPattern  = [true, false, false, false]
+    let fiveAccentPattern  = [true, false, false, false, false]
+    let sixAccentPattern   = [true, false, false, false, false, false]
+    let sevenAccentPattern = [true, false, false, false, false, false, false]
+
+    // Read-only computed pattern used by the metronome
+    var activeAccentPattern: [Bool] {
+        switch selectedAccentPattern {
+        case .four:  fourAccentPattern
+        case .five:  fiveAccentPattern
+        case .six:   sixAccentPattern
+        case .seven: sevenAccentPattern
+        }
+    }
+    
+    func pattern(for pattern: AccentPattern) -> [Bool] {
+        switch pattern {
+        case .four:  fourAccentPattern
+        case .five:  fiveAccentPattern
+        case .six:   sixAccentPattern
+        case .seven: sevenAccentPattern
+        }
+    }
 }
