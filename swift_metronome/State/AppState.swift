@@ -5,6 +5,7 @@ import SwiftData
 class AppState {
 
     enum AccentPattern: Int, CaseIterable, Identifiable {
+        case none
         case four
         case five
         case six
@@ -19,6 +20,7 @@ class AppState {
     var selectedAccentPattern: AccentPattern = .four
 
     // Pattern definitions
+    let noAccentPattern = [false]
     let fourAccentPattern  = [true, false, false, false]
     let fiveAccentPattern  = [true, false, false, false, false]
     let sixAccentPattern   = [true, false, false, false, false, false]
@@ -27,6 +29,7 @@ class AppState {
     // Read-only computed pattern used by the metronome
     var activeAccentPattern: [Bool] {
         switch selectedAccentPattern {
+        case .none:  noAccentPattern
         case .four:  fourAccentPattern
         case .five:  fiveAccentPattern
         case .six:   sixAccentPattern
@@ -36,6 +39,7 @@ class AppState {
     
     func pattern(for pattern: AccentPattern) -> [Bool] {
         switch pattern {
+        case .none:  noAccentPattern
         case .four:  fourAccentPattern
         case .five:  fiveAccentPattern
         case .six:   sixAccentPattern

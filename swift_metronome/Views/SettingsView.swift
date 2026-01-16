@@ -16,6 +16,7 @@ struct SettingsView: View {
                 Text("Accent Pattern")
                     .font(.headline)
 
+                accentRow(title: "No accents", pattern: .none)
                 accentRow(title: "4 beats", pattern: .four)
                 accentRow(title: "5 beats", pattern: .five)
                 accentRow(title: "6 beats", pattern: .six)

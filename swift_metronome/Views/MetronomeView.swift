@@ -104,14 +104,15 @@ struct MetronomeView: View {
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
             isPulsing = true
 
-            if !isMuted {
-                let pattern = appState.activeAccentPattern
-                let isAccent = pattern[beatIndex]
+            let pattern = appState.activeAccentPattern
 
+            if !isMuted {
+                let safeIndex = beatIndex % pattern.count
+                let isAccent = pattern[safeIndex]
                 SynthMetronome.shared.play(isAccent ? .accent : .tap)
             }
 
-            beatIndex = (beatIndex + 1) % appState.activeAccentPattern.count
+            beatIndex = (beatIndex + 1) % pattern.count
 
             DispatchQueue.main.asyncAfter(deadline: .now() + interval / 2) {
                 isPulsing = false
