@@ -20,6 +20,7 @@ struct MetronomeView: View {
 
     @State private var bpm: Int = 120
     @State private var isPulsing: Bool = false
+    @State private var isAccentBeat: Bool = false
     @State private var timer: Timer?
     @State private var selectedTempoName: String? = nil
     @State private var isMuted: Bool = true
@@ -35,10 +36,12 @@ struct MetronomeView: View {
 
             // Pulsing circle (now higher)
             Circle()
-                .fill(Color.blue)
-                .frame(width: 100, height: 100)
-                .opacity(isPulsing ? 1.0 : 0.2)
-                .animation(.easeInOut(duration: 0.1), value: isPulsing)
+                .fill(isPulsing
+                      ? (isAccentBeat ? .red : .blue)
+                      : .gray.opacity(0.3))
+                .frame(width: 80, height: 80)
+                .scaleEffect(isPulsing ? 1.2 : 1.0)
+                .animation(.easeOut(duration: 0.1), value: isPulsing)
 
             // BPM wheel picker
             Picker("Tempo", selection: $bpm) {
@@ -104,14 +107,17 @@ struct MetronomeView: View {
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { _ in
             isPulsing = true
 
-            if !isMuted {
-                let pattern = appState.activeAccentPattern
-                let isAccent = pattern[beatIndex]
+            let pattern = appState.activeAccentPattern
 
+            if !isMuted {
+                let safeIndex = beatIndex % pattern.count
+                let isAccent = pattern[safeIndex]
+                
+                isAccentBeat = isAccent
                 SynthMetronome.shared.play(isAccent ? .accent : .tap)
             }
 
-            beatIndex = (beatIndex + 1) % appState.activeAccentPattern.count
+            beatIndex = (beatIndex + 1) % pattern.count
 
             DispatchQueue.main.asyncAfter(deadline: .now() + interval / 2) {
                 isPulsing = false
