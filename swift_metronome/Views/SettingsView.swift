@@ -16,11 +16,13 @@ struct SettingsView: View {
                 Text("Accent Pattern")
                     .font(.headline)
 
-                accentRow(title: "No accents", pattern: .none)
-                accentRow(title: "4 beats", pattern: .four)
-                accentRow(title: "5 beats", pattern: .five)
-                accentRow(title: "6 beats", pattern: .six)
-                accentRow(title: "7 beats", pattern: .seven)
+                accentRow(title: "1/4", pattern: .none)
+                accentRow(title: "2/4", pattern: .two)
+                accentRow(title: "3/4", pattern: .three)
+                accentRow(title: "4/4", pattern: .four)
+                accentRow(title: "5/5", pattern: .five)
+                accentRow(title: "6/4", pattern: .six)
+                accentRow(title: "7/4", pattern: .seven)
             }
             .padding()
             .background(.ultraThinMaterial)

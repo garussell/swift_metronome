@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "136FA40A2F033022003EFDD7"
-               BuildableName = "swift_metronome.app"
-               BlueprintName = "swift_metronome"
-               ReferencedContainer = "container:swift_metronome.xcodeproj">
+               BuildableName = "Setlist Metronome.app"
+               BlueprintName = "Setlist Metronome"
+               ReferencedContainer = "container:Setlist Metronome.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,9 +36,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "136FA4192F033024003EFDD7"
-               BuildableName = "swift_metronomeTests.xctest"
-               BlueprintName = "swift_metronomeTests"
-               ReferencedContainer = "container:swift_metronome.xcodeproj">
+               BuildableName = "Setlist MetronomeTests.xctest"
+               BlueprintName = "Setlist MetronomeTests"
+               ReferencedContainer = "container:Setlist Metronome.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "136FA4232F033025003EFDD7"
-               BuildableName = "swift_metronomeUITests.xctest"
-               BlueprintName = "swift_metronomeUITests"
-               ReferencedContainer = "container:swift_metronome.xcodeproj">
+               BuildableName = "Setlist MetronomeUITests.xctest"
+               BlueprintName = "Setlist MetronomeUITests"
+               ReferencedContainer = "container:Setlist Metronome.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -69,9 +69,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "136FA40A2F033022003EFDD7"
-            BuildableName = "swift_metronome.app"
-            BlueprintName = "swift_metronome"
-            ReferencedContainer = "container:swift_metronome.xcodeproj">
+            BuildableName = "Setlist Metronome.app"
+            BlueprintName = "Setlist Metronome"
+            ReferencedContainer = "container:Setlist Metronome.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -92,9 +92,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "136FA40A2F033022003EFDD7"
-            BuildableName = "swift_metronome.app"
-            BlueprintName = "swift_metronome"
-            ReferencedContainer = "container:swift_metronome.xcodeproj">
+            BuildableName = "Setlist Metronome.app"
+            BlueprintName = "Setlist Metronome"
+            ReferencedContainer = "container:Setlist Metronome.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
