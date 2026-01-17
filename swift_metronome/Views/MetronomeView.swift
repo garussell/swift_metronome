@@ -108,16 +108,19 @@ struct MetronomeView: View {
             isPulsing = true
 
             let pattern = appState.activeAccentPattern
+            let safeIndex = beatIndex % pattern.count
+            let isAccent = pattern[safeIndex]
 
+            // Always update visual state
+            isAccentBeat = isAccent
+
+            // Only gate sound
             if !isMuted {
-                let safeIndex = beatIndex % pattern.count
-                let isAccent = pattern[safeIndex]
-                
-                isAccentBeat = isAccent
                 SynthMetronome.shared.play(isAccent ? .accent : .tap)
             }
 
             beatIndex = (beatIndex + 1) % pattern.count
+
 
             DispatchQueue.main.asyncAfter(deadline: .now() + interval / 2) {
                 isPulsing = false

@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a.jpeg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -12,6 +13,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 1.jpeg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -23,56 +25,67 @@
           "value" : "tinted"
         }
       ],
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 2.jpeg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 10.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "16x16"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 8.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "16x16"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 9.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "32x32"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 7.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "32x32"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 6.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "128x128"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 4.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "128x128"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 5.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "256x256"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 3.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "256x256"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 2.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "512x512"
     },
     {
+      "filename" : "C9130B8E-431F-4C11-8AD8-3CD190E7C6AD_1_201_a 3.jpeg",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"

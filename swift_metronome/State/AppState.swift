@@ -6,6 +6,8 @@ class AppState {
 
     enum AccentPattern: Int, CaseIterable, Identifiable {
         case none
+        case two
+        case three
         case four
         case five
         case six
@@ -21,6 +23,8 @@ class AppState {
 
     // Pattern definitions
     let noAccentPattern = [false]
+    let twoAccentPattern  = [true, false]
+    let threeAccentPattern = [true, false, false]
     let fourAccentPattern  = [true, false, false, false]
     let fiveAccentPattern  = [true, false, false, false, false]
     let sixAccentPattern   = [true, false, false, false, false, false]
@@ -30,6 +34,8 @@ class AppState {
     var activeAccentPattern: [Bool] {
         switch selectedAccentPattern {
         case .none:  noAccentPattern
+        case .two:   twoAccentPattern
+        case .three: threeAccentPattern
         case .four:  fourAccentPattern
         case .five:  fiveAccentPattern
         case .six:   sixAccentPattern
@@ -40,6 +46,8 @@ class AppState {
     func pattern(for pattern: AccentPattern) -> [Bool] {
         switch pattern {
         case .none:  noAccentPattern
+        case .two:   twoAccentPattern
+        case .three: threeAccentPattern
         case .four:  fourAccentPattern
         case .five:  fiveAccentPattern
         case .six:   sixAccentPattern

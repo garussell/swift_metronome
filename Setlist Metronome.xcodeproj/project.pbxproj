@@ -24,9 +24,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		136FA40B2F033022003EFDD7 /* swift_metronome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swift_metronome.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		136FA41A2F033024003EFDD7 /* swift_metronomeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swift_metronomeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		136FA4242F033025003EFDD7 /* swift_metronomeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swift_metronomeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		136FA40B2F033022003EFDD7 /* Setlist Metronome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Setlist Metronome.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		136FA41A2F033024003EFDD7 /* Setlist MetronomeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Setlist MetronomeTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		136FA4242F033025003EFDD7 /* Setlist MetronomeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Setlist MetronomeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -85,9 +85,9 @@
 		136FA40C2F033022003EFDD7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				136FA40B2F033022003EFDD7 /* swift_metronome.app */,
-				136FA41A2F033024003EFDD7 /* swift_metronomeTests.xctest */,
-				136FA4242F033025003EFDD7 /* swift_metronomeUITests.xctest */,
+				136FA40B2F033022003EFDD7 /* Setlist Metronome.app */,
+				136FA41A2F033024003EFDD7 /* Setlist MetronomeTests.xctest */,
+				136FA4242F033025003EFDD7 /* Setlist MetronomeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		136FA40A2F033022003EFDD7 /* swift_metronome */ = {
+		136FA40A2F033022003EFDD7 /* Setlist Metronome */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 136FA42E2F033025003EFDD7 /* Build configuration list for PBXNativeTarget "swift_metronome" */;
+			buildConfigurationList = 136FA42E2F033025003EFDD7 /* Build configuration list for PBXNativeTarget "Setlist Metronome" */;
 			buildPhases = (
 				136FA4072F033022003EFDD7 /* Sources */,
 				136FA4082F033022003EFDD7 /* Frameworks */,
@@ -110,16 +110,16 @@
 			fileSystemSynchronizedGroups = (
 				136FA40D2F033022003EFDD7 /* swift_metronome */,
 			);
-			name = swift_metronome;
+			name = "Setlist Metronome";
 			packageProductDependencies = (
 			);
 			productName = swift_metronome;
-			productReference = 136FA40B2F033022003EFDD7 /* swift_metronome.app */;
+			productReference = 136FA40B2F033022003EFDD7 /* Setlist Metronome.app */;
 			productType = "com.apple.product-type.application";
 		};
-		136FA4192F033024003EFDD7 /* swift_metronomeTests */ = {
+		136FA4192F033024003EFDD7 /* Setlist MetronomeTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 136FA4312F033025003EFDD7 /* Build configuration list for PBXNativeTarget "swift_metronomeTests" */;
+			buildConfigurationList = 136FA4312F033025003EFDD7 /* Build configuration list for PBXNativeTarget "Setlist MetronomeTests" */;
 			buildPhases = (
 				136FA4162F033024003EFDD7 /* Sources */,
 				136FA4172F033024003EFDD7 /* Frameworks */,
@@ -133,16 +133,16 @@
 			fileSystemSynchronizedGroups = (
 				136FA41D2F033025003EFDD7 /* swift_metronomeTests */,
 			);
-			name = swift_metronomeTests;
+			name = "Setlist MetronomeTests";
 			packageProductDependencies = (
 			);
 			productName = swift_metronomeTests;
-			productReference = 136FA41A2F033024003EFDD7 /* swift_metronomeTests.xctest */;
+			productReference = 136FA41A2F033024003EFDD7 /* Setlist MetronomeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		136FA4232F033025003EFDD7 /* swift_metronomeUITests */ = {
+		136FA4232F033025003EFDD7 /* Setlist MetronomeUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 136FA4342F033025003EFDD7 /* Build configuration list for PBXNativeTarget "swift_metronomeUITests" */;
+			buildConfigurationList = 136FA4342F033025003EFDD7 /* Build configuration list for PBXNativeTarget "Setlist MetronomeUITests" */;
 			buildPhases = (
 				136FA4202F033025003EFDD7 /* Sources */,
 				136FA4212F033025003EFDD7 /* Frameworks */,
@@ -156,11 +156,11 @@
 			fileSystemSynchronizedGroups = (
 				136FA4272F033025003EFDD7 /* swift_metronomeUITests */,
 			);
-			name = swift_metronomeUITests;
+			name = "Setlist MetronomeUITests";
 			packageProductDependencies = (
 			);
 			productName = swift_metronomeUITests;
-			productReference = 136FA4242F033025003EFDD7 /* swift_metronomeUITests.xctest */;
+			productReference = 136FA4242F033025003EFDD7 /* Setlist MetronomeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -186,7 +186,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 136FA4062F033022003EFDD7 /* Build configuration list for PBXProject "swift_metronome" */;
+			buildConfigurationList = 136FA4062F033022003EFDD7 /* Build configuration list for PBXProject "Setlist Metronome" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -200,9 +200,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				136FA40A2F033022003EFDD7 /* swift_metronome */,
-				136FA4192F033024003EFDD7 /* swift_metronomeTests */,
-				136FA4232F033025003EFDD7 /* swift_metronomeUITests */,
+				136FA40A2F033022003EFDD7 /* Setlist Metronome */,
+				136FA4192F033024003EFDD7 /* Setlist MetronomeTests */,
+				136FA4232F033025003EFDD7 /* Setlist MetronomeUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,12 +258,12 @@
 /* Begin PBXTargetDependency section */
 		136FA41C2F033024003EFDD7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 136FA40A2F033022003EFDD7 /* swift_metronome */;
+			target = 136FA40A2F033022003EFDD7 /* Setlist Metronome */;
 			targetProxy = 136FA41B2F033024003EFDD7 /* PBXContainerItemProxy */;
 		};
 		136FA4262F033025003EFDD7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 136FA40A2F033022003EFDD7 /* swift_metronome */;
+			target = 136FA40A2F033022003EFDD7 /* Setlist Metronome */;
 			targetProxy = 136FA4252F033025003EFDD7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -489,7 +489,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/swift_metronome.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/swift_metronome";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Setlist Metronome.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Setlist Metronome";
 				XROS_DEPLOYMENT_TARGET = 26.2;
 			};
 			name = Debug;
@@ -514,7 +514,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/swift_metronome.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/swift_metronome";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Setlist Metronome.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Setlist Metronome";
 				XROS_DEPLOYMENT_TARGET = 26.2;
 			};
 			name = Release;
@@ -570,7 +570,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		136FA4062F033022003EFDD7 /* Build configuration list for PBXProject "swift_metronome" */ = {
+		136FA4062F033022003EFDD7 /* Build configuration list for PBXProject "Setlist Metronome" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				136FA42C2F033025003EFDD7 /* Debug */,
@@ -579,7 +579,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		136FA42E2F033025003EFDD7 /* Build configuration list for PBXNativeTarget "swift_metronome" */ = {
+		136FA42E2F033025003EFDD7 /* Build configuration list for PBXNativeTarget "Setlist Metronome" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				136FA42F2F033025003EFDD7 /* Debug */,
@@ -588,7 +588,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		136FA4312F033025003EFDD7 /* Build configuration list for PBXNativeTarget "swift_metronomeTests" */ = {
+		136FA4312F033025003EFDD7 /* Build configuration list for PBXNativeTarget "Setlist MetronomeTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				136FA4322F033025003EFDD7 /* Debug */,
@@ -597,7 +597,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		136FA4342F033025003EFDD7 /* Build configuration list for PBXNativeTarget "swift_metronomeUITests" */ = {
+		136FA4342F033025003EFDD7 /* Build configuration list for PBXNativeTarget "Setlist MetronomeUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				136FA4352F033025003EFDD7 /* Debug */,
