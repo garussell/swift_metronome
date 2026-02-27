@@ -11,18 +11,18 @@ struct SettingsView: View {
                 .font(.largeTitle)
                 .padding(.top, 40)
 
-            // Accent Pattern Section
+            // Time Signature Section
             VStack(alignment: .leading, spacing: 16) {
-                Text("Accent Pattern")
+                Text("Time Signature")
                     .font(.headline)
 
-                accentRow(title: "1/4", pattern: .none)
-                accentRow(title: "2/4", pattern: .two)
-                accentRow(title: "3/4", pattern: .three)
-                accentRow(title: "4/4", pattern: .four)
-                accentRow(title: "5/4", pattern: .five)
-                accentRow(title: "6/4", pattern: .six)
-                accentRow(title: "7/4", pattern: .seven)
+                accentRow(pattern: .none)
+                accentRow(pattern: .two)
+                accentRow(pattern: .three)
+                accentRow(pattern: .four)
+                accentRow(pattern: .five)
+                accentRow(pattern: .six)
+                accentRow(pattern: .seven)
             }
             .padding()
             .background(.ultraThinMaterial)
@@ -34,9 +34,9 @@ struct SettingsView: View {
                 Text("Click Sound")
                     .font(.headline)
 
-                clickRow(title: "Classic", sound: .classic)
-                clickRow(title: "Soft", sound: .soft)
-                clickRow(title: "Sharp", sound: .sharp)
+                clickRow(sound: .classic)
+                clickRow(sound: .soft)
+                clickRow(sound: .sharp)
             }
             .padding()
             .background(.ultraThinMaterial)
@@ -48,11 +48,7 @@ struct SettingsView: View {
     }
 
     // MARK: - Accent Row
-    @ViewBuilder
-    private func accentRow(
-        title: String,
-        pattern: AppState.AccentPattern
-    ) -> some View {
+    private func accentRow(pattern: AppState.AccentPattern) -> some View {
         Button {
             appState.selectedAccentPattern = pattern
         } label: {
@@ -68,49 +64,69 @@ struct SettingsView: View {
                     : .secondary
                 )
 
-                Text(title)
+                Text(pattern.displayName)
 
                 Spacer()
 
-                let preview = appState.pattern(for: pattern)
-                HStack(spacing: 4) {
-                    ForEach(preview.indices, id: \.self) { index in
-                        Circle()
-                            .fill(preview[index] ? Color.blue : Color.gray.opacity(0.3))
-                            .frame(width: 8, height: 8)
-                    }
-                }
+                beatDots(for: pattern)
             }
         }
         .buttonStyle(.plain)
     }
 
-    // MARK: - Click Sound Row
     @ViewBuilder
-    private func clickRow(
-        title: String,
-        sound: AppState.ClickSound
-    ) -> some View {
-        Button {
-            appState.selectedClickSound = sound
-        } label: {
-            HStack {
-                Image(systemName:
-                    appState.selectedClickSound == sound
-                    ? "checkmark.circle.fill"
-                    : "circle"
-                )
-                .foregroundStyle(
-                    appState.selectedClickSound == sound
-                    ? .blue
-                    : .secondary
-                )
-
-                Text(title)
-                Spacer()
+    private func beatDots(for pattern: AppState.AccentPattern) -> some View {
+        if pattern == .none {
+            Text("–")
+                .foregroundStyle(.secondary)
+                .frame(width: 40)
+        } else {
+            let preview = appState.pattern(for: pattern)
+            HStack(spacing: 4) {
+                ForEach(preview.indices, id: \.self) { index in
+                    Circle()
+                        .fill(preview[index] ? Color.blue : Color.gray.opacity(0.3))
+                        .frame(width: 8, height: 8)
+                }
             }
         }
-        .buttonStyle(.plain)
+    }
+
+    // MARK: - Click Sound Row
+    private func clickRow(sound: AppState.ClickSound) -> some View {
+        HStack {
+            Button {
+                appState.selectedClickSound = sound
+            } label: {
+                HStack {
+                    Image(systemName:
+                        appState.selectedClickSound == sound
+                        ? "checkmark.circle.fill"
+                        : "circle"
+                    )
+                    .foregroundStyle(
+                        appState.selectedClickSound == sound
+                        ? .blue
+                        : .secondary
+                    )
+
+                    Text(sound.displayName)
+                    Spacer()
+                }
+            }
+            .buttonStyle(.plain)
+
+            Button {
+                SynthMetronome.shared.setClickStyle(sound.synthStyle)
+                SynthMetronome.shared.play(.tap)
+                SynthMetronome.shared.setClickStyle(appState.selectedClickSound.synthStyle)
+            } label: {
+                Image(systemName: "play.circle")
+                    .foregroundStyle(.blue)
+                    .font(.title3)
+            }
+            .buttonStyle(.plain)
+        }
     }
 }
 
@@ -118,4 +134,3 @@ struct SettingsView: View {
     SettingsView()
         .environment(AppState())
 }
-

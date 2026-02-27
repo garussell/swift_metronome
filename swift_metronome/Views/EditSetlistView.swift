@@ -10,6 +10,10 @@ struct EditSetlistView: View {
     @State private var newName: String = ""
     @State private var newTempoName: String = ""
     @State private var bpm: Int = 120
+    @State private var showDeleteConfirmation = false
+    @State private var showAddSong = false
+
+    @FocusState private var tempoNameFocused: Bool
 
     @Query(sort: \Tempo.order) private var allTempos: [Tempo]
 
@@ -19,26 +23,61 @@ struct EditSetlistView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-
-            // Title
-            Text("Edit Setlist")
-                .font(.largeTitle)
-                .padding(.top, 16)
-
-            // Rename setlist
-            TextField("Setlist name", text: $newName)
-                .textFieldStyle(.roundedBorder)
-                .padding(.horizontal)
+            renameSection
 
             Divider()
 
-            // Add Song
-            VStack(spacing: 12) {
-                Text("Add Song")
-                    .font(.headline)
+            addSongSection
 
+            Divider()
+
+            songsList
+        }
+        .safeAreaInset(edge: .bottom) {
+            actionButtons
+                .padding(.horizontal)
+                .padding(.vertical, 12)
+                .background(.regularMaterial)
+        }
+        .alert("Delete \"\(setlist.name)\"?", isPresented: $showDeleteConfirmation) {
+            Button("Delete", role: .destructive) { deleteSetlist() }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This will permanently delete the setlist and all its songs.")
+        }
+        .onAppear {
+            newName = setlist.name
+        }
+        .navigationTitle("Edit Setlist")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                EditButton()
+            }
+        }
+    }
+
+    // MARK: - View Components
+
+    private var renameSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Setlist Name")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            TextField("Setlist name", text: $newName)
+                .textFieldStyle(.roundedBorder)
+        }
+        .padding(.horizontal)
+    }
+
+    private var addSongSection: some View {
+        DisclosureGroup("Add Song", isExpanded: $showAddSong) {
+            VStack(spacing: 12) {
                 TextField("Song name", text: $newTempoName)
                     .textFieldStyle(.roundedBorder)
+                    .focused($tempoNameFocused)
+                    .submitLabel(.done)
+                    .onSubmit { addTempo() }
 
                 Picker("BPM", selection: $bpm) {
                     ForEach(40...240, id: \.self) { value in
@@ -54,58 +93,36 @@ struct EditSetlistView: View {
                 .disabled(newTempoName.isEmpty)
                 .buttonStyle(.borderedProminent)
             }
-            .padding(.horizontal)
+            .padding(.top, 8)
+        }
+        .padding(.horizontal)
+    }
 
-            Divider()
-
-            // Songs list with drag reordering
-            List {
-                ForEach(temposInSetlist) { tempo in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(tempo.name)
-                            Text("\(tempo.bpm) BPM")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-
-                        Spacer()
-
-                        Button {
-                            modelContext.delete(tempo)
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundStyle(.red)
-                                .font(.title3)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .onMove(perform: moveTempos)
+    private var songsList: some View {
+        List {
+            ForEach(temposInSetlist) { tempo in
+                TempoRow(tempo: tempo, onDelete: {
+                    modelContext.delete(tempo)
+                })
             }
-            .frame(maxHeight: 300)
-            .toolbar {
-                EditButton() // enables drag handles
-            }
+            .onMove(perform: moveTempos)
+        }
+    }
 
+    private var actionButtons: some View {
+        VStack(spacing: 12) {
             Button("Save Setlist") {
                 saveChanges()
             }
             .buttonStyle(.borderedProminent)
+            .frame(maxWidth: .infinity)
 
             Button(role: .destructive) {
-                deleteSetlist()
+                showDeleteConfirmation = true
             } label: {
                 Label("Delete Setlist", systemImage: "trash")
             }
-            .padding(.bottom, 20)
-
         }
-        .onAppear {
-            newName = setlist.name
-        }
-        .navigationTitle("Edit Setlist")
-        .navigationBarTitleDisplayMode(.inline)
     }
 
     // MARK: - Actions
@@ -116,6 +133,7 @@ struct EditSetlistView: View {
     }
 
     private func addTempo() {
+        guard !newTempoName.isEmpty else { return }
         let nextOrder = temposInSetlist.count
 
         let tempo = Tempo(
@@ -127,6 +145,7 @@ struct EditSetlistView: View {
 
         modelContext.insert(tempo)
         newTempoName = ""
+        tempoNameFocused = false
     }
 
     private func moveTempos(from source: IndexSet, to destination: Int) {
@@ -145,5 +164,34 @@ struct EditSetlistView: View {
 
         modelContext.delete(setlist)
         dismiss()
+    }
+}
+
+// MARK: - Supporting Views
+
+struct TempoRow: View {
+    let tempo: Tempo
+    let onDelete: () -> Void
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(tempo.name)
+                Text("\(tempo.bpm) BPM")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Button {
+                onDelete()
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundStyle(.red)
+                    .font(.title3)
+            }
+            .buttonStyle(.plain)
+        }
     }
 }

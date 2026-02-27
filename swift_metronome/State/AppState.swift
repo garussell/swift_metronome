@@ -52,11 +52,26 @@ class AppState {
 
     var activeSetlist: Setlist?
 
-    /// Accent pattern selected in Settings
-    var selectedAccentPattern: AccentPattern = .four
+    /// Accent pattern selected in Settings, persisted across launches
+    var selectedAccentPattern: AccentPattern = .four {
+        didSet { UserDefaults.standard.set(selectedAccentPattern.rawValue, forKey: "selectedAccentPattern") }
+    }
 
-    /// Click sound selected in Settings
-    var selectedClickSound: ClickSound = .classic
+    /// Click sound selected in Settings, persisted across launches
+    var selectedClickSound: ClickSound = .classic {
+        didSet { UserDefaults.standard.set(selectedClickSound.rawValue, forKey: "selectedClickSound") }
+    }
+
+    init() {
+        if let raw = UserDefaults.standard.object(forKey: "selectedAccentPattern") as? Int,
+           let pattern = AccentPattern(rawValue: raw) {
+            selectedAccentPattern = pattern
+        }
+        if let raw = UserDefaults.standard.object(forKey: "selectedClickSound") as? Int,
+           let sound = ClickSound(rawValue: raw) {
+            selectedClickSound = sound
+        }
+    }
 
     // MARK: - Accent Pattern Definitions
 

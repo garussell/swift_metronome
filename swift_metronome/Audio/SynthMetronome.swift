@@ -56,17 +56,6 @@ final class SynthMetronome {
         currentStyle = style
     }
     
-    func setClickSound(_ sound: AppState.ClickSound) {
-        switch sound {
-        case .classic:
-            setClickStyle(.classic)
-        case .soft:
-            setClickStyle(.soft)
-        case .sharp:
-            setClickStyle(.sharp)
-        }
-    }
-
     func play(_ sound: Sound) {
         let buffer: AVAudioPCMBuffer?
 
@@ -95,7 +84,6 @@ final class SynthMetronome {
 
     private func generateBuffers(format: AVAudioFormat) {
 
-        // Classic (what you already had)
         tapBuffers[.classic] = makeBeepBuffer(
             frequency: 900,
             amplitude: 0.35,
@@ -162,9 +150,18 @@ final class SynthMetronome {
         let channelData = buffer.floatChannelData![0]
         let sr = Float(format.sampleRate)
 
+        // Short linear fade-in and fade-out to eliminate click/pop at buffer edges
+        let fadeFrames = min(Int(sr * 0.005), Int(frameCount) / 4)
+
         for i in 0..<Int(frameCount) {
+            var envelope: Float = 1.0
+            if i < fadeFrames {
+                envelope = Float(i) / Float(fadeFrames)
+            } else if i >= Int(frameCount) - fadeFrames {
+                envelope = Float(Int(frameCount) - i) / Float(fadeFrames)
+            }
             let sample = sin(2.0 * Float.pi * frequency * Float(i) / sr)
-            channelData[i] = sample * amplitude
+            channelData[i] = sample * amplitude * envelope
         }
 
         return buffer
